@@ -7,7 +7,6 @@ export default {
 				position: 'relative',
 				width: 'auto',
 				borderRadius: "8px",
-				background: 'white',
 				color: 'black',
 				padding: '10px',
 				minWidth: '150px',
@@ -39,17 +38,23 @@ export default {
 				borderColor: 'transparent white transparent transparent',
 				transform: 'rotate(180deg)'
 			},
+			'& .message': {
+				background: 'white',
+			},
 		},
 		'& .to-me': {
 			justifyContent: 'flex-start',
 			marginLeft: '10px',
+			'& .message': {
+				background: '#CCFFCC',
+			},
 			'&:before': {
 				left: '38px',
 				content: "''",
 				position: 'absolute',
 				borderStyle: 'solid',
 				borderWidth: '0px 28px 14px 0',
-				borderColor: 'transparent white transparent transparent'
+				borderColor: 'transparent #CCFFCC transparent transparent'
 			},
 		}
 	}

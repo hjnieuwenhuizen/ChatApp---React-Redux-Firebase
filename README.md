@@ -1,18 +1,21 @@
 # ChatApp---React-Redux-Firebase
 A chat application using ReactJS, Redux and Google Firebase.
 
-# TODOs in order of priority
-0. Security
-1. Search contacts and chats
-2. Optimizations: Check for any state mutations, check for any unnecessary re-renders, lazy load chat messages
-3. Fix temp solution in addContact cloud function
-4. Create middleware for the cloud functions.
-5. Split components into pure componenets and containers.
-6. Refactor code to fix some imperative code.
-7. Add friend/contact request functionality.
-8. Add message alerts
-9. Make it look pretty. Responsive
-10. Add more comments
+# TODOs
+* Security
+* Optimizations: 
+    * Check for any state mutations
+    * Check for any unnecessary re-renders
+    * Lazy load chat messages
+* Fix temp solution in addContact cloud function
+* Create middleware for the cloud functions.
+* Split components into pure componenets and containers.
+* Refactor code to fix some imperative code.
+* Add friend/contact request functionality.
+* Add message alerts
+* Make it look pretty. Responsive
+* Add more comments
+* Offline functionality
 
 # Prerequisite
 This application make use of Google Firebase for the backend. Before running through the steps below you will need to ensure you already have a project with Google Firebase.

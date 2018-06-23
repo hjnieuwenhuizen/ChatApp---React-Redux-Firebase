@@ -10,9 +10,10 @@ export const contacts = (uid) => {
 
         try {
             //attach event listner
-            firestore.collection("contacts").doc(uid).collection("data")
+            let eventListner = firestore.collection("contacts").doc(uid).collection("data")
                 .orderBy("username")
                 .onSnapshot(function(snapshot) {
+                    dispatch({type: 'GOT_CONTACTS', payload: {}});
                     snapshot.docChanges().forEach(function(change) {
                         let data = {
                             ...change.doc.data(),
@@ -22,6 +23,7 @@ export const contacts = (uid) => {
                         dispatch({type: 'ADD_CONTACT', payload: data});
                     });
                 });
+            window.chatEvents.push(eventListner);
         } catch (error) {
             console.log(error);
         }
@@ -35,7 +37,7 @@ export const messages = (contact) => {
 
         try {
             //attach event listner
-            firestore.collection("chats").doc(contact.chatID).collection("data")
+            let eventListner = firestore.collection("chats").doc(contact.chatID).collection("data")
                 .orderBy("time")    
                 .onSnapshot(function(snapshot) {
                     snapshot.docChanges().forEach(function(change) {
@@ -46,6 +48,26 @@ export const messages = (contact) => {
                         dispatch({type: 'ADD_MESSAGE', payload: data});
                     });
                 });
+            window.chatEvents.push(eventListner);
+        } catch (error) {
+            console.log(error);
+        }
+
+	}
+}
+
+/**
+ * removeRealtimeActions
+ */
+export const removeRealtimeActions = () => {
+	return (dispatch) => {
+
+        try {
+            window.chatEvents.forEach(event => {
+                //unsubscribe
+                event();
+            });
+            window.chatEvents = [];
         } catch (error) {
             console.log(error);
         }

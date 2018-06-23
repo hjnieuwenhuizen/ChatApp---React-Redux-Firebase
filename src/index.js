@@ -8,6 +8,9 @@ import router from './router';
 import request from './modules/request';
 import { contacts } from './actions/realtimeActions';
 
+//create array for storing event listeners for contacts and chats
+window.chatEvents = [];
+
 //listen to auth change
 firebase.auth().onAuthStateChanged(async(user) => {
 	if (user) {

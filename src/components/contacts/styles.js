@@ -1,50 +1,51 @@
 export default {
 	contacts: {
 		position: 'absolute',
-		width: 'calc(100% - 2px)',
+		width: '90%',
+		margin: 'auto',
+		left: 0,
+		right: 0,
 		height: '100%',
 		background: 'black',
-		borderRight: '2px solid white',
 		'& .your-username': {
-			width: '90%',
-			background: 'white',
-			color: 'black',
+			width: '100%',
+			color: 'white',
 			position: 'relative',
-			margin: 'auto',
-			left: 0,
-			right: 0,
 			padding: '5px',
 			marginTop: '20px',
-			textAlign: 'center'
+			textAlign: 'center',
+			fontSize: '25px'
 		},
 		'& .contacts': {
-			width: '90%',
-			margin: 'auto',
-			marginTop: '20px',
-			marginBottom: '20px',
+			width: '100%',
+			marginTop: '40px',
+			marginBottom: '50px',
+			'& .distractor-container': {
+				position: 'relative',
+				height: '60px'
+			},
 			'& .contact': {
-				border: '2px solid white',
+				border: '2px solid #CCFFCC',
 				width: 'calc(100% - 10px)',
 				lineHeigth: '60px',
 				paddingLeft: '5px',
 				paddingTop: '10px',
 				paddingBottom: '10px',
 				cursor: 'pointer',
-				textAlign: 'center'
+				textAlign: 'center',
+				color: '#CCFFCC',
+				marginTop: '10px'
 			},
 			'& .contact:hover': {
 				opacity: 0.8
 			}
 		},
 		'& .add-contact, .sign-out': {
-			width: '90%',
+			width: '100%',
 			background: 'white',
 			color: 'black',
 			cursor: 'pointer',
 			position: 'relative',
-			margin: 'auto',
-			left: 0,
-			right: 0,
 			textAlign: 'center',
 			paddingTop: '5px',
 			paddingBottom: '5px',

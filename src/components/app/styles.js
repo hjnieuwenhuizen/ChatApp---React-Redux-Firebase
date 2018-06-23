@@ -15,7 +15,8 @@ export default {
 			top: 0,
 			left: 0,
 			height: '100%',
-			width: '400px'
+			width: '398px',
+			borderRight: '2px solid white',
 		},
 		'& .chat-container': {
 			position: 'relative',

@@ -1,9 +1,17 @@
 export default function (state = {
 		selectedContact: null,
+		gotContacts: false,
 		contacts: [],
-		chats: []
+		chats: [],
+		searching: false,
+		searchResults: []
 	}, action) {
 	switch (action.type) {
+		case 'GOT_CONTACTS':
+			return {
+				...state,
+				gotContacts: true
+			}
 		case 'ADD_CONTACT':
 			return {
 				...state,
@@ -26,13 +34,15 @@ export default function (state = {
 			let flag = false;
 			
 			chats
-				.filter(data => data.chatID === action.payload.chatID)
 				.map((data, index) => {
-					flag = true;
-					return chats[index].messages = [
-						...chats[index].messages,
-						action.payload
-					]
+					if(data.chatID === action.payload.chatID) {
+						flag = true;
+						return chats[index].messages = [
+							...chats[index].messages,
+							action.payload
+						]
+					}
+					return ""
 				})
 
 			if(!flag) {
@@ -47,6 +57,16 @@ export default function (state = {
 			return {
 				...state,
 				chats: chats
+			}
+		case 'SEARCH_STATE':
+			return {
+				...state,
+				searching: action.payload
+			}
+		case 'SET_SEARCH_RESULTS':
+			return {
+				...state,
+				searchResults: action.payload
 			}
 		default:
 	}
