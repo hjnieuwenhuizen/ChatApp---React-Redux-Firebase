@@ -11,11 +11,12 @@ export const contacts = (uid) => {
         try {
             //attach event listner
             firestore.collection("contacts").doc(uid).collection("data")
-                .onSnapshot(function(querySnapshot) {
-                    querySnapshot.forEach(function(doc) {
+                .orderBy("username")
+                .onSnapshot(function(snapshot) {
+                    snapshot.docChanges().forEach(function(change) {
                         let data = {
-                            ...doc.data(),
-                            chatID: doc.id
+                            ...change.doc.data(),
+                            chatID: change.doc.id
                         }
                         dispatch(messages(data));
                         dispatch({type: 'ADD_CONTACT', payload: data});
@@ -35,13 +36,14 @@ export const messages = (contact) => {
         try {
             //attach event listner
             firestore.collection("chats").doc(contact.chatID).collection("data")
-                .onSnapshot(function(querySnapshot) {
-                    querySnapshot.forEach(function(doc) {
+                .orderBy("time")    
+                .onSnapshot(function(snapshot) {
+                    snapshot.docChanges().forEach(function(change) {
                         let data = {
-                            ...doc.data(),
+                            ...change.doc.data(),
                             chatID: contact.chatID
                         }
-                        dispatch({type: 'ADD_MESSAGE', payload: data})
+                        dispatch({type: 'ADD_MESSAGE', payload: data});
                     });
                 });
         } catch (error) {

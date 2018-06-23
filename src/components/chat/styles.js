@@ -15,19 +15,16 @@ export default {
 			bottom: 0
 		},
 		'& .chat': {
-			position: 'absolute',
+			position: 'relative',
 			top: '20px',
 			width: '90%',
-			height: 'calc(100% - 103px)',
+			height: 'calc(100% - 120px)',
 			left: 0,
 			right: 0,
 			margin: 'auto',
 			overflowY: 'scroll',
-			'& .message': {
-				background: 'white',
-				color: 'black',
-				marginTop: '10px',
-				padding: '10px'
+			'& .message-end': {
+				display: 'none',
 			}
 		},
 		'& ::-webkit-scrollbar': { 
@@ -70,6 +67,16 @@ export default {
 				},
 				'& button:hover': {
 					opacity: 0.8
+				},
+				'& .distractor-containter': {
+					position: 'absolute',
+					right: '50px',
+					top: 0,
+					bottom: 0,
+					'& .distractor': {
+						border: '2px solid black',
+						borderRightColor: 'transparent'
+					}
 				}
 			}
 		}

@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 import styles from './styles.js';
 import request from '../../modules/request.js';
 import Distractor from '../distractor';
+import Message from '../message';
 
 /**
  * Chat
@@ -14,6 +15,22 @@ class Chat extends Component {
 	state = {
 		message: "",
 		loading: false
+	}
+
+	/**
+	 * componentDidUpdate
+	 */
+	componentDidUpdate() {
+		this.scrollToBottom();
+	}
+
+	/**
+	 * scrollToBottom
+	 */
+	scrollToBottom() {
+		if(this.props.selectedContact !== null) {
+			this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+		}
 	}
 
 	/**
@@ -30,6 +47,10 @@ class Chat extends Component {
 	 */
 	async send(e) {
 
+		if(this.state.message === "") {
+			return;
+		}
+
 		e.preventDefault();
 
 		this.setState({
@@ -39,8 +60,8 @@ class Chat extends Component {
 		try {
 			//set post data
 			const contact = this.props.contacts[this.props.selectedContact];
-			const from = contact.uid;
-			const to = this.props.user.uid;
+			const from = this.props.user.uid;
+			const to = contact.uid;
 			const chatID = contact.chatID;
 			const message = this.state.message;
 			const postData = "from=" + from + 
@@ -48,10 +69,8 @@ class Chat extends Component {
 				"&chatID=" + chatID +
 				"&message=" + message;
 			
-
-
 			// Send request to save username
-			const result = await request("POST", "sendMessage", postData);
+			await request("POST", "sendMessage", postData);
 
 			//reset
 			this.setState({
@@ -84,49 +103,57 @@ class Chat extends Component {
 		let messages = this.props.chats
 			.filter(data => data.chatID === this.props.contacts[this.props.selectedContact].chatID)
 			.map((data) => {
-				//TODO - add class for styling of from and to
-				return data.messages.map((message, index) => {
-					return (
-						<div 
-							key={index} 
-							className='message'
-						>
-							{message.message}
-						</div>
-					)
-				})
-
+				return data.messages
+					.map((message, index) => {
+						return (
+							<Message
+								key={index} 
+								message={message}
+								uid={this.props.user.uid}
+							/>
+						)
+					})
 			})
 
 		return (
 			<div className={classes.chat}>
 				<div className="chat">
-					{messages}
+					<ol className="conversation">
+						{messages}
+						<div 
+							ref={el => { this.messagesEnd = el; }}
+							className="message-end"
+						>
+						</div>
+					</ol>
 				</div>
 				<div className="send">
-					{
-						this.state.loading ?
-						<Distractor/>
-						:
-						<form 
-							className="container" 
-							onSubmit={this.send.bind(this)} 
+					<form 
+						className="container" 
+						onSubmit={this.send.bind(this)} 
+					>
+						<input
+							type="text"
+							placeholder="Message"
+							onChange={this.updateSendTxt.bind(this)}
+							value={this.state.message}
+							disabled={this.state.loading}
+							autoFocus
+							required
+						/>
+						<button
+							type="submit"
+							disabled={this.state.loading}
 						>
-							<input
-								type="text"
-								placeholder="Message"
-								onChange={this.updateSendTxt.bind(this)}
-								value={this.state.message}
-								autoFocus
-								required
-							/>
-							<button
-								type="submit"
-							>
-								SEND
-							</button>
-						</form>
-					}
+							SEND
+						</button>
+						{
+							this.state.loading ?
+							<div className="distractor-containter"><Distractor/></div>
+							:
+							<div></div>
+						}
+					</form>
 				</div>
 			</div>
 		);

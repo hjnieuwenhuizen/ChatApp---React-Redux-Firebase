@@ -4,7 +4,7 @@ A chat application using ReactJS, Redux and Google Firebase.
 # TODOs in order of priority
 0. Security
 1. Search contacts and chats
-2. Audit app and ensure that there is no altering of state and that there is no unnecessary re-renders.
+2. Optimizations: Check for any state mutations, check for any unnecessary re-renders, lazy load chat messages
 3. Fix temp solution in addContact cloud function
 4. Create middleware for the cloud functions.
 5. Split components into pure componenets and containers.

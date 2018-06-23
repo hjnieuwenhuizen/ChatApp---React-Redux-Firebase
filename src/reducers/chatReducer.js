@@ -25,12 +25,15 @@ export default function (state = {
 
 			let flag = false;
 			
-			chats.map((data, index) => {
-				if(data.chatID === action.payload.chatID) {
+			chats
+				.filter(data => data.chatID === action.payload.chatID)
+				.map((data, index) => {
 					flag = true;
-					chats[index].messages.push(action.payload)
-				}
-			})
+					return chats[index].messages = [
+						...chats[index].messages,
+						action.payload
+					]
+				})
 
 			if(!flag) {
 				chats.push({

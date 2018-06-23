@@ -30,6 +30,7 @@ export default {
 				paddingTop: '10px',
 				paddingBottom: '10px',
 				cursor: 'pointer',
+				textAlign: 'center'
 			},
 			'& .contact:hover': {
 				opacity: 0.8
