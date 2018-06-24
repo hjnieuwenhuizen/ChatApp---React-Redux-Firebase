@@ -12,9 +12,6 @@ A chat application using ReactJS, Redux and Google Firebase.
 * Split components into pure componenets and containers.
 * Refactor code to fix some imperative code.
 * Add friend/contact request functionality.
-* Add message alerts
-* Make it look pretty. Responsive
-* Add more comments
 * Offline functionality
 
 # Prerequisite

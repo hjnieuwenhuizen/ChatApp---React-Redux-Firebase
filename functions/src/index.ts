@@ -160,13 +160,15 @@ exports.addContact = functions.https.onRequest(async(req, res) => {
                     //save for current user
                     await contactsCollection.doc(uid).collection("data").doc(chatID).set({
                         username: contactId, //correct case
-                        uid: contactUID
+                        uid: contactUID,
+                        lastRead: new Date().getTime()
                     })
     
                     //save current user for the contact as well
                     await contactsCollection.doc(contactUID).collection("data").doc(chatID).set({
                         username: currentUsersUsername,
-                        uid: uid
+                        uid: uid,
+                        lastRead: new Date().getTime()
                     })
     
                     res.send({
@@ -234,3 +236,45 @@ exports.sendMessage = functions.https.onRequest(async(req, res) => {
         res.status(500).send(error);
     }
 });
+
+//update the last read time
+exports.updateLastRead = functions.https.onRequest(async(req, res) => {
+
+    res.header('Content-Type','application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    //respond to CORS preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+    }
+
+    try {
+
+        //query parameters
+        const uid = req.query.uid;
+        const contactuid = req.query.contactuid;
+        const contactUsername = req.query.contactUsername;
+        const chatID = req.query.chatID;
+
+        //Contacts collection
+        const contactsCollection = admin.firestore().collection("contacts");
+
+        //update contact
+        await contactsCollection.doc(uid).collection("data").doc(chatID).set({
+            username: contactUsername,
+            uid: contactuid,
+            lastRead: new Date().getTime()
+        })
+
+        res.send({
+            success: true
+        });
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+
+

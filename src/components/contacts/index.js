@@ -6,6 +6,8 @@ import injectSheet from 'react-jss';
 import styles from './styles.js';
 import SearchBar from '../searchBar';
 import Distractor from '../distractor';
+import Notifications from '../notifications';
+import request from '../../modules/request';
 import { removeRealtimeActions } from '../../actions/realtimeActions'
 
 /**
@@ -32,8 +34,48 @@ class Contacts extends Component {
 	/**
 	 * contactClicked
 	 */
-	contactClicked(index) {
+	async contactClicked(index) {
 		this.props.selectContact(index);
+
+		if(this.weHaveNotifications(index)) {
+			try {
+				//set post data
+				let postData = "uid=" + this.props.user.uid + 
+					"&contactuid=" + this.props.contacts[index].uid +
+					"&contactUsername=" + this.props.contacts[index].username +
+					"&chatID=" + this.props.contacts[index].chatID;
+	
+				// Send request to update the last read
+				await request("POST", "updateLastRead", postData);
+	
+			} catch (error) {
+				console.log(error)
+			}
+		}
+	}
+
+	/**
+	 * weHaveNotifications
+	 */
+	weHaveNotifications(index) {
+		let contact = this.props.contacts[index];
+
+		let messages = this.props.chats
+			.filter(data => data.chatID === contact.chatID)
+			.map((data) => {
+				return data.messages
+					.filter(message => contact.lastRead < message.time)
+					.map((message) => {
+						return message;
+					})
+			})
+		
+		if(messages.length > 0) {
+			if(messages[0].length > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -75,6 +117,7 @@ class Contacts extends Component {
 					onClick={this.contactClicked.bind(this, index)}
 				>
 					{data.username}
+					<Notifications contact={index}/>
 				</div>
 			)
 		})
@@ -155,12 +198,14 @@ class Contacts extends Component {
  */
 const mapStateToProps = (state) => {
     return {
+		user: state.user.user,
 		contacts: state.chat.contacts,
 		username: state.user.username,
 		selectedContact: state.chat.selectedContact,
 		gotContacts: state.chat.gotContacts,
 		searching: state.chat.searching,
-		searchResults: state.chat.searchResults
+		searchResults: state.chat.searchResults,
+		chats: state.chat.chats
 	}
 }
 

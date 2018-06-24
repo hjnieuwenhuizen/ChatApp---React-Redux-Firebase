@@ -46,9 +46,9 @@ export default {
 		},
 		'& .chat': {
 			position: 'relative',
-			top: '40px',
+			top: '50px',
 			width: '90%',
-			height: 'calc(100% - 120px)',
+			height: 'calc(100% - 130px)',
 			left: 0,
 			right: 0,
 			margin: 'auto',

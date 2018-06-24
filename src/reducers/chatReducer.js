@@ -20,6 +20,16 @@ export default function (state = {
 					action.payload
 				]
 			}
+		case 'UPDATE_CONTACT':
+
+			let contacts = [...state.contacts];
+
+			contacts[action.payload.index] = action.payload.data;
+
+			return {
+				...state,
+				contacts: contacts
+			}
 		case 'SELECT_CONTACT':
 			return {
 				...state,
@@ -31,12 +41,12 @@ export default function (state = {
 
 			let chats = [...state.chats];
 
-			let flag = false;
+			let chatsFlag = false;
 			
 			chats
 				.map((data, index) => {
 					if(data.chatID === action.payload.chatID) {
-						flag = true;
+						chatsFlag = true;
 						return chats[index].messages = [
 							...chats[index].messages,
 							action.payload
@@ -45,7 +55,7 @@ export default function (state = {
 					return ""
 				})
 
-			if(!flag) {
+			if(!chatsFlag) {
 				chats.push({
 					chatID: action.payload.chatID,
 					messages: [

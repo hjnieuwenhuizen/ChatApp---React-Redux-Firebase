@@ -6,22 +6,50 @@ firestore.settings(settings);
 
 //Listen for contacts
 export const contacts = (uid) => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 
         try {
             //attach event listner
             let eventListner = firestore.collection("contacts").doc(uid).collection("data")
                 .orderBy("username")
                 .onSnapshot(function(snapshot) {
+
                     dispatch({type: 'GOT_CONTACTS', payload: {}});
+                    let currentContact = getState().chat.contacts;
+
                     snapshot.docChanges().forEach(function(change) {
+
+                        let index;
+                        let flag = false;
+
+                        for (let i = 0; i < currentContact.length; i++) {
+                            if(change.doc.id === currentContact[i].chatID) {
+                                index = i;
+                                flag = true;
+                            }
+                        }
+
                         let data = {
                             ...change.doc.data(),
                             chatID: change.doc.id
                         }
-                        dispatch(messages(data));
-                        dispatch({type: 'ADD_CONTACT', payload: data});
+
+                        if(!flag) {
+    
+                            dispatch({type: 'ADD_CONTACT', payload: data});
+                            dispatch(messages(data));
+
+                        } else {
+
+                            dispatch({type: 'UPDATE_CONTACT', payload: {
+                                index,
+                                data
+                            }});
+
+                        }
+
                     });
+
                 });
             window.chatEvents.push(eventListner);
         } catch (error) {

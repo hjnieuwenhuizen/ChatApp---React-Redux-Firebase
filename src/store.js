@@ -8,4 +8,6 @@ const logger = createLogger();
 const middleware = applyMiddleware(logger, thunk);
 const store = createStore(reducers, composeWithDevTools(middleware));
 
+window.reduxStore = store;
+
 export default store;

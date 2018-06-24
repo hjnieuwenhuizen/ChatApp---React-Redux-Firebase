@@ -25,6 +25,7 @@ export default {
 				height: '60px'
 			},
 			'& .contact': {
+				position: 'relative',
 				border: '2px solid #CCFFCC',
 				width: 'calc(100% - 10px)',
 				lineHeigth: '60px',

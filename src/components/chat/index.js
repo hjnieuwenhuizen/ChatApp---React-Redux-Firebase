@@ -199,7 +199,7 @@ const mapStateToProps = (state) => {
  */
 const mapDispatchToProps = (dispatch) => {
     return {
-		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index})
+		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index}),
 	}
 }
 
