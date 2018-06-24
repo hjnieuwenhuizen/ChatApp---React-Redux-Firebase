@@ -14,17 +14,56 @@ export default {
 			top: 0,
 			bottom: 0
 		},
+		'& .head': {
+			position: 'fixed',
+			width: '90%',
+			marginLeft: '5%',
+			marginTop: '10px',
+			height: '40px',
+			'& .back': {
+				position: 'absolute',
+				display: 'none',
+				fontSize: '30px',
+				width: '50px',
+				height: '50px',
+				textAlign: 'center'
+			},
+			'& .username': {
+				position: 'absolute',
+				fontSize: '25px'
+			},
+			'@media (max-width: 1000px)': {
+				width: '100%',
+				marginLeft: 0,
+				'& .back': {
+					display: 'block'
+				},
+				'& .username': {
+					left: '50px',
+					top: '6px'
+				}
+			}
+		},
 		'& .chat': {
 			position: 'relative',
-			top: '20px',
+			top: '40px',
 			width: '90%',
 			height: 'calc(100% - 120px)',
 			left: 0,
 			right: 0,
 			margin: 'auto',
 			overflowY: 'scroll',
+			overflowX: 'hidden',
+			'& ol': {
+				padding: 0
+			},
 			'& .message-end': {
 				display: 'none',
+			},
+			'@media (max-width: 1000px)': {
+				top: '68px',
+				height: 'calc(100% - 110px)',
+				width: '100%',
 			}
 		},
 		'& ::-webkit-scrollbar': { 
@@ -77,7 +116,36 @@ export default {
 						border: '2px solid black',
 						borderRightColor: 'transparent'
 					}
+				},
+				'@media (max-width: 1000px)': {
+					'& input': {
+						width: 'calc(100% - 120px)',
+						border: 'none',
+						borderTop: '1px solid white',
+						padding: '10px',
+					},
+					'& button': {
+						width: '100px',
+						paddingTop: '5px',
+						paddingBottom: '5px',
+						height: '42px',
+						fontSize: '20px',
+						fontWeight: 'bold'
+					},
+					'& .distractor-containter': {
+						right: '20px',
+						'& .distractor': {
+							border: '1px solid black',
+							borderRightColor: 'transparent',
+							width: '10px',
+							height: '10px'
+						}
+					}
 				}
+			},
+			'@media (max-width: 1000px)': {
+				width: '100%',
+				bottom: 0
 			}
 		}
 	}

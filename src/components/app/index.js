@@ -13,19 +13,49 @@ import Chat from '../chat';
 class App extends Component {
 
 	/**
+	 * componentDidMount
+	 */
+	componentDidMount() {
+		if(this.props.authKnown) {
+			this.checkUserState();
+		}
+	}
+
+	/**
 	 * componentDidUpdate
 	 */
 	componentDidUpdate() {
+		if(this.props.authKnown && !this.redirecting) {
+			this.checkUserState();
+		}
+	}
+
+	/**
+	 * checkUserState
+	 */
+	checkUserState() {
 		//redirect to auth route if not signed in
-		if(this.props.authKnown && !this.props.signedIn) {
+		if(!this.props.signedIn) {
+			this.redirecting = true;
 			this.props.history.push('auth');
 			return;
 		}
 
 		//redirec user to page to edit username
-		if(this.props.authKnown && this.props.signedIn && this.props.username === "") {
+		if(this.props.username === "") {
+			this.redirecting = true;
 			this.props.history.push('selectusername');
 		}
+	}
+
+	/**
+	 * getClassMobile
+	 */
+	getClassMobile() {
+		if(this.props.selectedContact === null) {
+			return "show-contacts";
+		}
+		return "hide-contacts";
 	}
 
 	/**
@@ -41,10 +71,10 @@ class App extends Component {
 
 		return (
 			<div className={classes.app}>
-				<div className="contacts-container">
+				<div className={"contacts-container " + this.getClassMobile()}>
 					<Contacts/>
 				</div>
-				<div className="chat-container">
+				<div className={"chat-container " + this.getClassMobile()}>
 					<Chat/>
 				</div>
 			</div>
@@ -62,7 +92,8 @@ const mapStateToProps = (state) => {
     return {
 		signedIn: state.user.signedIn,
 		authKnown: state.user.authKnown,
-		username: state.user.username
+		username: state.user.username,
+		selectedContact: state.chat.selectedContact
 	}
 }
 

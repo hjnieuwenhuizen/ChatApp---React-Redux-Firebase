@@ -33,7 +33,7 @@ class Contacts extends Component {
 	 * contactClicked
 	 */
 	contactClicked(index) {
-		this.props.selectedContact(index);
+		this.props.selectContact(index);
 	}
 
 	/**
@@ -173,7 +173,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
 		signOut: () => dispatch({type: 'SIGNED_OUT', payload: {}}),
 		removeRealtimeActions: () => dispatch(removeRealtimeActions()),
-		selectedContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index})
+		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index})
 	}
 }
 

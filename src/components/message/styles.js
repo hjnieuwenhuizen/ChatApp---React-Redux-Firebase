@@ -10,19 +10,22 @@ export default {
 				color: 'black',
 				padding: '10px',
 				minWidth: '150px',
+				maxWidth: '50%',
 				'& .text': {
-					marginRight: '100px'
-				},
-				'& .text, .time': {
 					marginTop: 0,
-					marginBottom: 0
+					marginRight: 0,
+					marginBottom: '20px'
 				},
 				'& .time': {
+					marginBottom: 0,
 					position: 'absolute',
 					bottom: '10px',
 					right: '10px',
 					color: 'grey',
 					fontSize: '10px'
+				},
+				'@media (max-width: 1000px)': {
+
 				}
 			}
 		},
@@ -49,7 +52,7 @@ export default {
 				background: '#CCFFCC',
 			},
 			'&:before': {
-				left: '38px',
+				left: 0,
 				content: "''",
 				position: 'absolute',
 				borderStyle: 'solid',

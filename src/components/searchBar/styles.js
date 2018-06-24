@@ -1,6 +1,6 @@
 export default {
 	searchBar: {
-		marginTop: '10px',
+		marginTop: '20px',
 		width: '100%',
 		'& form': {
 			width: '100%',

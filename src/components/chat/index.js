@@ -18,6 +18,13 @@ class Chat extends Component {
 	}
 
 	/**
+	 * componentDidMount
+	 */
+	componentDidMount() {
+		this.scrollToBottom();
+	}
+
+	/**
 	 * componentDidUpdate
 	 */
 	componentDidUpdate() {
@@ -28,8 +35,9 @@ class Chat extends Component {
 	 * scrollToBottom
 	 */
 	scrollToBottom() {
-		if(this.props.selectedContact !== null) {
-			this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+		let element = document.getElementById("chatWindow");
+		if(element !== null) {
+			element.scrollTop = element.scrollHeight;
 		}
 	}
 
@@ -86,6 +94,13 @@ class Chat extends Component {
 	}
 
 	/**
+	 * back
+	 */
+	back() {
+		this.props.selectContact(null);
+	}
+
+	/**
 	 * render
 	 */
 	render() {
@@ -117,7 +132,11 @@ class Chat extends Component {
 
 		return (
 			<div className={classes.chat}>
-				<div className="chat">
+				<div className='head'>
+					<div className='back' onClick={this.back.bind(this)}>&laquo;</div>
+					<div className="username">{this.props.contacts[this.props.selectedContact].username}</div>
+				</div>	
+				<div id="chatWindow" className="chat">
 					<ol className="conversation">
 						{messages}
 						<div 
@@ -138,7 +157,6 @@ class Chat extends Component {
 							onChange={this.updateSendTxt.bind(this)}
 							value={this.state.message}
 							disabled={this.state.loading}
-							autoFocus
 							required
 						/>
 						<button
@@ -180,7 +198,9 @@ const mapStateToProps = (state) => {
  * dispatch {function} - redux dispatch action function
  */
 const mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index})
+	}
 }
 
 // Export component and connect actions and state
