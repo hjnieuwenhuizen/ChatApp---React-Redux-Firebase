@@ -6,6 +6,7 @@ import store from './store';
 import firebase from './firebase';
 import router from './router';
 import request from './modules/request';
+import registerServiceWorker from './registerServiceWorker';
 import { contacts } from './actions/realtimeActions';
 
 //create array for storing event listeners for contacts and chats
@@ -21,7 +22,7 @@ firebase.auth().onAuthStateChanged(async(user) => {
 		//Get data
 		try {
 			// Send request to get username
-			const usernameResult = await request("GET", "getUsername", "uid=" + user.uid);
+			const usernameResult = await request("GET", "getUsername", "uid=" + user.uid, user.qa);
 			store.dispatch(
 				{
 					type: 'SET_USERNAME', 
@@ -50,3 +51,5 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('root')
 );
+
+registerServiceWorker();

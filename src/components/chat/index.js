@@ -72,10 +72,12 @@ class Chat extends Component {
 			const to = contact.uid;
 			const chatID = contact.chatID;
 			const message = this.state.message;
+			let time = new Date().getTime()
 			const postData = "from=" + from + 
 				"&to=" + to +
 				"&chatID=" + chatID +
-				"&message=" + message;
+				"&message=" + message +
+				"&time=" + time;
 			
 			// Send request to save username
 			await request("POST", "sendMessage", postData);
@@ -108,7 +110,7 @@ class Chat extends Component {
 
 		if(this.props.selectedContact === null) {
 			return (
-				<div className={classes.chat}>
+				<div id="chat" className={classes.chat}>
 					<div className="no-chat-selected">Please select a contact on the right.</div>
 				</div>
 			);
@@ -131,7 +133,7 @@ class Chat extends Component {
 			})
 
 		return (
-			<div className={classes.chat}>
+			<div id="chat" className={classes.chat}>
 				<div className='head'>
 					<div className='back' onClick={this.back.bind(this)}>&laquo;</div>
 					<div className="username">{this.props.contacts[this.props.selectedContact].username}</div>

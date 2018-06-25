@@ -1,4 +1,5 @@
 import firebase from '../firebase';
+import { updateLastRead } from './chatActions';
 
 const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
@@ -61,20 +62,34 @@ export const contacts = (uid) => {
 
 //Listen for messages
 export const messages = (contact) => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 
         try {
             //attach event listner
             let eventListner = firestore.collection("chats").doc(contact.chatID).collection("data")
                 .orderBy("time")    
                 .onSnapshot(function(snapshot) {
+
+                    let chatState = getState().chat;
+
                     snapshot.docChanges().forEach(function(change) {
+
                         let data = {
                             ...change.doc.data(),
                             chatID: contact.chatID
                         }
+
                         dispatch({type: 'ADD_MESSAGE', payload: data});
+
+                        //update last read as this message is for a the selected contact
+                        if(chatState.selectedContact !== null) {
+                            if(contact.chatID === chatState.contacts[chatState.selectedContact].chatID) {
+                                dispatch(updateLastRead(chatState.selectedContact));
+                            }
+                        }
+
                     });
+                    
                 });
             window.chatEvents.push(eventListner);
         } catch (error) {

@@ -7,8 +7,8 @@ import styles from './styles.js';
 import SearchBar from '../searchBar';
 import Distractor from '../distractor';
 import Notifications from '../notifications';
-import request from '../../modules/request';
-import { removeRealtimeActions } from '../../actions/realtimeActions'
+import { updateLastRead } from '../../actions/chatActions';
+import { removeRealtimeActions } from '../../actions/realtimeActions';
 
 /**
  * Contacts
@@ -35,47 +35,16 @@ class Contacts extends Component {
 	 * contactClicked
 	 */
 	async contactClicked(index) {
+
+		if(this.props.selectedContact !== null) {
+			//update the last contact in focus 
+			this.props.updateLastRead(this.props.selectedContact);
+		}
+
+		//select the new cotact
 		this.props.selectContact(index);
+		this.props.updateLastRead(index);
 
-		if(this.weHaveNotifications(index)) {
-			try {
-				//set post data
-				let postData = "uid=" + this.props.user.uid + 
-					"&contactuid=" + this.props.contacts[index].uid +
-					"&contactUsername=" + this.props.contacts[index].username +
-					"&chatID=" + this.props.contacts[index].chatID;
-	
-				// Send request to update the last read
-				await request("POST", "updateLastRead", postData);
-	
-			} catch (error) {
-				console.log(error)
-			}
-		}
-	}
-
-	/**
-	 * weHaveNotifications
-	 */
-	weHaveNotifications(index) {
-		let contact = this.props.contacts[index];
-
-		let messages = this.props.chats
-			.filter(data => data.chatID === contact.chatID)
-			.map((data) => {
-				return data.messages
-					.filter(message => contact.lastRead < message.time)
-					.map((message) => {
-						return message;
-					})
-			})
-		
-		if(messages.length > 0) {
-			if(messages[0].length > 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -218,7 +187,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
 		signOut: () => dispatch({type: 'SIGNED_OUT', payload: {}}),
 		removeRealtimeActions: () => dispatch(removeRealtimeActions()),
-		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index})
+		selectContact: (index) => dispatch({type: 'SELECT_CONTACT', payload: index}),
+		updateLastRead: (index) => dispatch(updateLastRead(index))
 	}
 }
 

@@ -2,13 +2,11 @@
 A chat application using ReactJS, Redux and Google Firebase.
 
 # TODOs
-* Security
 * Optimizations: 
     * Check for any state mutations
     * Check for any unnecessary re-renders
     * Lazy load chat messages
 * Fix temp solution in addContact cloud function
-* Create middleware for the cloud functions.
 * Split components into pure componenets and containers.
 * Refactor code to fix some imperative code.
 * Add friend/contact request functionality.

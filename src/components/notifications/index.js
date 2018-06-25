@@ -10,15 +10,20 @@ class Notifications extends Component {
 
 	/**
 	 * getNotifications
+	 * Calculates number of unread messages
 	 */
 	getNotifications() {
+		if(this.props.selectedContact === this.props.contact) {
+			return <div></div>
+		}
+
 		let contact = this.props.contacts[this.props.contact];
 
 		let messages = this.props.chats
 			.filter(data => data.chatID === contact.chatID)
 			.map((data) => {
 				return data.messages
-					.filter(message => contact.lastRead < message.time)
+					.filter(message => contact.lastRead < message.time && message.to === this.props.user.uid)
 					.map((message) => {
 						return message;
 					})
@@ -55,7 +60,9 @@ class Notifications extends Component {
 const mapStateToProps = (state) => {
     return {
 		contacts: state.chat.contacts,
-		chats: state.chat.chats
+		chats: state.chat.chats,
+		selectedContact: state.chat.selectedContact,
+		user: state.user.user
 	}
 }
 
